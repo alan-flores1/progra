@@ -1,0 +1,16 @@
+{
+    "Pacientes:": [
+        {
+            "Rut": "21840401-4",
+            "Nombre": "Alan Flores",
+            "Fecha de nacimiento": "15/05/2005",
+            "Dolencia": "Dolor de corazon (sentimental)(gei)"
+        },
+        {
+            "Rut": "95030580",
+            "Nombre": "Ximena Rubio",
+            "Fecha de nacimiento": "24/03/1963",
+            "Dolencia": "Belleza"
+        }
+    ]
+}
