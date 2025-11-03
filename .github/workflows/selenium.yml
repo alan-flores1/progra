@@ -31,4 +31,4 @@ jobs:
 
       - name: Ejecutar pruebas Selenium
         run: |
-          python test_login.py
+          python test_login_reg.py
