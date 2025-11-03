@@ -22,7 +22,7 @@ jobs:
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          pip install -r Python/dependencias.txt
+          pip install -r dependencias.txt
 
       - name: Instalar navegador y driver
         run: |
@@ -32,5 +32,5 @@ jobs:
 
       - name: Ejecutar tests de Selenium
         run: |
-          python Python/test_login.py
-          python Python/test_registro.py
+          python TESTINGFS/test_login.py
+          python TESTINGFS/test_registro.py
