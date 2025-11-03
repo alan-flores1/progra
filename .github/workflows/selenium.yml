@@ -1,36 +1,34 @@
-name: Selenium Tests
+name: Pruebas Selenium
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar el repositorio
+      - name: Clonar repositorio
         uses: actions/checkout@v4
 
-      - name: Instalar Python
-        uses: actions/setup-python@v5
+      - name: Configurar Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: 3.11
 
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          pip install -r dependencias.txt
+          pip install selenium
 
       - name: Instalar navegador y driver
         run: |
           sudo apt-get update
-          sudo apt-get install -y chromium-browser chromium-chromedriver
-          echo "export PATH=$PATH:/usr/lib/chromium-browser/" >> $GITHUB_ENV
+          sudo apt-get install -y chromium-browser
+          sudo apt-get install -y chromium-chromedriver
 
-      - name: Ejecutar tests de Selenium
+      - name: Ejecutar pruebas Selenium
         run: |
-          python TESTINGFS/test_login.py
-          python TESTINGFS/test_registro.py
+          python test_login.py
