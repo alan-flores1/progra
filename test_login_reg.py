@@ -1,29 +1,43 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import os
 
-URL_REGISTRO = "https://music-online-lilac.vercel.app/sesion"
-URL_SESION = "https://music-online-lilac.vercel.app/registro"
+# URL correctas
+URL_REGISTRO = "https://music-online-lilac.vercel.app/registro"
+URL_SESION = "https://music-online-lilac.vercel.app/sesion"
 
+# Datos de prueba
 NOMBRE = "Usuario Testeo"
 EMAIL = "usuariotest@duoc.cl"
 PASSWORD = "1234"
 DIRECCION = "Callebenyi 123"
 REGION = "metropolitana"
-COMUNA = "Santiago"
+COMUNA = "santiago"
 
-driver = webdriver.Chrome()
+# Cargar Chrome for Testing desde variable del workflow
+chrome_path = os.getenv("CHROME_BINARY", "/opt/chrome/chrome")
+
+options = Options()
+options.binary_location = chrome_path
+options.add_argument("--headless=new")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+
+driver = webdriver.Chrome(options=options)
 driver.maximize_window()
 
-
+# Función para esperar elementos
 def esperar(selector, by=By.CSS_SELECTOR, tiempo=10):
-    return WebDriverWait(driver, tiempo).until(EC.presence_of_element_located((by, selector)))
-
+    return WebDriverWait(driver, tiempo).until(
+        EC.presence_of_element_located((by, selector))
+    )
 
 try:
+    print("🔵 TEST: Registro")
     driver.get(URL_REGISTRO)
 
     esperar("#nombre").send_keys(NOMBRE)
@@ -32,29 +46,37 @@ try:
     esperar("#confirmar").send_keys(PASSWORD)
     esperar("#direccion").send_keys(DIRECCION)
 
-    esperar("select#region").send_keys(REGION)
+    # Seleccionar región
+    esperar("select#region").click()
+    esperar("select#region option[value='metropolitana']").click()
 
-    time.sleep(0.5)
+    time.sleep(0.3)
 
-    esperar("select#comuna").send_keys(COMUNA)
+    # Seleccionar comuna
+    esperar("select#comuna").click()
+    esperar("select#comuna option[value='santiago']").click()
 
+    # Enviar formulario
     esperar("button[type='submit']").click()
 
+    # Validar toast
     WebDriverWait(driver, 10).until(
         EC.text_to_be_present_in_element(
             (By.CLASS_NAME, "toast-body"),
             "Registro exitoso"
         )
     )
+
     print("✅ Registro exitoso en el test")
 
     time.sleep(1.5)
 
+    # --- INICIO DE SESIÓN ---
+    print("🔵 TEST: Login")
     driver.get(URL_SESION)
 
     esperar("#email").send_keys(EMAIL)
     esperar("#password").send_keys(PASSWORD)
-
     esperar("button[type='submit']").click()
 
     WebDriverWait(driver, 10).until(
@@ -70,5 +92,5 @@ except Exception as e:
     print("❌ Error en el test:", e)
 
 finally:
-    time.sleep(2)
+    time.sleep(1)
     driver.quit()
