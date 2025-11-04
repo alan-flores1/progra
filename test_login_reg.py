@@ -73,12 +73,27 @@ try:
 
     # --- INICIO DE SESIÓN ---
     print("🔵 TEST: Login")
-    driver.get(URL_SESION)
 
-    esperar("#email").send_keys(EMAIL)
-    esperar("#password").send_keys(PASSWORD)
+    driver.get(URL_SESION)
+    time.sleep(1)
+
+    # Esperar que realmente esté en la página correcta
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "form"))
+    )
+
+    campo_email = esperar("#email")
+    campo_email.clear()
+    campo_email.send_keys(EMAIL)
+
+    campo_pass = esperar("#password")
+    campo_pass.clear()
+    campo_pass.send_keys(PASSWORD)
+
+    # Click en iniciar sesión
     esperar("button[type='submit']").click()
 
+    # Esperar mensaje de bienvenida
     WebDriverWait(driver, 10).until(
         EC.text_to_be_present_in_element(
             (By.CLASS_NAME, "toast-body"),
