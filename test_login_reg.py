@@ -104,7 +104,9 @@ try:
     print("✅ Inicio de sesión: PASÓ correctamente")
 
 except Exception as e:
-    print("❌ Error en el test:", e)
+    import traceback
+    print("❌ Error en el test:")
+    traceback.print_exc()
 
 finally:
     time.sleep(1)
