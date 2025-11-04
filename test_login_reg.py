@@ -90,7 +90,7 @@ try:
     campo_pass.clear()
     campo_pass.send_keys(PASSWORD)
 
-    # Click en iniciar sesión
+    # Click en iniciar 
     esperar("button[type='submit']").click()
 
     # Esperar mensaje de bienvenida
